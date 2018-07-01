@@ -4,26 +4,40 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-const hbs = require('hbs')
+var hbs = require('hbs')
 var session = require('express-session')
 var multer = require('multer');
 var upload = multer({
   dest: './uploads'
 });
 var passport = require('passport');
-var flash= require('connect-flash')
+var flash = require('connect-flash')
 var moment = require('moment');
 var expressValidator = require('express-validator');
+
+var exphbs = require('express-handlebars');
+var Handlebars = require('handlebars')
+
+
 
 var {
   db
 } = require('./db/monk_config');
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var postRouter = require('./routes/posts');
+var categoryRouter = require('./routes/categories');
 
 var app = express();
 
+
+//setting moment libr as global variable soo that it can be used in index.hbs to format the date
+app.locals.moment = moment;
+
+app.locals.truncateText = function (text,length) {
+  let truncatedText = text.substring(0,length);
+  return truncatedText;
+}
 // view engine setup
 app.set('views', path.join(__dirname, '../views'));
 app.set('view engine', 'hbs');
@@ -31,6 +45,61 @@ hbs.registerPartials(path.join(__dirname, '../views/partials'))
 hbs.localsAsTemplateData(app); //this is for Exposing locals variable as template data
 //when we use app.locals & res.locals -> to set the global variable which can be used in Template engine (Handlebars)
 
+//-------------------Playground-------------------------------
+/* var Handlebars = express_handlebars.create({
+  helpers :{
+    foo : function () {
+      return 'Hello world'
+    }
+  }
+}) */
+/* app.engine('handlebars', Handlebars.engine);
+app.set('view engine', 'handlebars'); */
+
+/* Handlebars.registerHelper('mycustomBlock', function(property){
+  return 'Hello world'
+})
+ */
+/* 
+Handlebars = exphbs.create({
+  extname: 'hbs',
+  defaultLayout: 'layout.hbs',
+  helpers: {
+      formatDate: function (date, format) {
+          return moment(date).format(format);
+      }
+  }
+}); */
+/* 
+app.engine('hbs', exphbs.engine);
+app.set('view engine', 'hbs'); */
+
+/* var helpers = require('handlebars-helpers');
+helpers.date(); */
+/* 
+Handlebars.registerHelper("printItems", function(items) {
+  // var html = "<ul>";
+  // items.forEach(function(entry) {
+  //   html += "<li>" + entry + "</li>";
+  // });
+  // html += "</ul>";
+  // return html;
+  return new Handlebars.SafeString("helloworld");
+});
+
+var context = {
+  author: {firstName: "Alan", lastName: "Johnson"},
+  body: "I Love Handlebars",
+  comments: [{
+    author: {firstName: "Yehuda", lastName: "Katz"},
+    body: "Me too!"
+  }]
+};
+
+Handlebars.registerHelper('fullName', function(person) {
+  return person.firstName + " " + person.lastName;
+}); */
+//--------------------------------------------------
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -89,8 +158,12 @@ app.use(function (req, res, next) {
   req.db = db;
   next();
 })
+//http://localhost:3000/
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+//http://localhost:3000/posts
+app.use('/posts', postRouter);
+//http://localhost:3000/category
+app.use('/categories', categoryRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
