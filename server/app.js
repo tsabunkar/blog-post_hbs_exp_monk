@@ -6,18 +6,18 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var hbs = require('hbs')
 var session = require('express-session')
-var multer = require('multer');
-var upload = multer({
+// var multer = require('multer');
+/* var upload = multer({
   dest: './uploads'
-});
+}); */
 var passport = require('passport');
 var flash = require('connect-flash')
-var moment = require('moment');
+// var moment = require('moment');
 var expressValidator = require('express-validator');
 
-var exphbs = require('express-handlebars');
+/* var exphbs = require('express-handlebars');
 var Handlebars = require('handlebars')
-
+ */
 
 
 var {
@@ -32,12 +32,12 @@ var app = express();
 
 
 //setting moment libr as global variable soo that it can be used in index.hbs to format the date
-app.locals.moment = moment;
+/* app.locals.moment = moment;
 
 app.locals.truncateText = function (text,length) {
   let truncatedText = text.substring(0,length);
   return truncatedText;
-}
+} */
 // view engine setup
 app.set('views', path.join(__dirname, '../views'));
 app.set('view engine', 'hbs');
