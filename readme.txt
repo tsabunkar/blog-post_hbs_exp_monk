@@ -29,3 +29,13 @@ monk -> ORM tool (Object relational mapping)
 mongoose -> ODM tool (Object Data modeling)
 
 =============================================================================
+handlebars has built-in helpers / builtin Block Expressions like-
+{{#each}} {{#if}} {{#with}}
+
+to add custom helpers like /custom Block Expressions - {{foo}}
+we need to add ->
+Handlebars.registerHelper('foo', function() {
+
+});
+
+==============================================================================

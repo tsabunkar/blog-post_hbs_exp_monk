@@ -9,11 +9,11 @@ var {
 } = require('../db/monk_config');
 
 /* GET users listing. */
-////http://localhost:3000/posts/add
+//http://localhost:3000/posts/add
 router.get('/add', function (req, res, next) {
   //getting the blog_category collection from DB
   let blog_category_collec = db.get('blog_category');
-  blog_category_collec.find({}, {}, function (err, listOfCategories) {//findall
+  blog_category_collec.find({}, {}, function (err, listOfCategories) { //findall
     res.render('addpost.hbs', {
       title: 'Add Post',
       listOfCategories
@@ -62,6 +62,20 @@ router.post('/add', upload.single('mainimage'), function (req, res, next) {
 
 
   //  console.log(author,title,category,content,createdAt);
+});
+
+//http://localhost:3000/posts/show/45543de
+router.get('/show/:id', function (req, res, next) {
+  console.log(req.params.id)
+  //getting the blog_category collection from DB
+  let blog_post_collec = db.get('blog_post');
+  blog_post_collec.findOne({_id : req.params.id}, function (err, singleBlogPostDocum) { 
+    res.render('show.hbs', {
+      title: 'Show Post',
+      blogpost: singleBlogPostDocum
+    })
+  })
+
 });
 
 module.exports = router;
