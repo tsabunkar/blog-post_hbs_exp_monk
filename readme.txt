@@ -39,3 +39,28 @@ Handlebars.registerHelper('foo', function() {
 });
 
 ==============================================================================
+When we deploy this application to heroku, the images stored inside the folder i.e- public/images are getting 
+break.This bcoz of-
+he Heroku filesystem is ephemeral - that means that any changes to the filesystem whilst the dyno is
+running only last until that dyno is shut down or restarted. Each dyno boots with a clean copy of
+the filesystem from the most recent deploy. This is similar to how many container based systems, 
+such as Docker, operate.
+
+In addition, under normal operations dynos will restart every day in a process known as "Cycling".
+These two facts mean that the filesystem on Heroku is not suitable for PERSISTENT STORAGE of data. 
+In cases where you need to store data we recommend using a database addon such as Postgres 
+(for data) or a dedicated file storage service such as AWS S3 (for static files). 
+
+
+Soo Instead of using file system to store the images,let me use dedicated database itself for storing this
+static images.
+Let me use realtional database provide by heroku -> Postgres (free addon)
+Heroku Postgres :: Database :hobby-dev (hobby-dev-> is the free  plan for Postgres)
+------------------------
+Dashboard>(select ur application) >Resource (tab) >(new window open)Settings (tab) > Database credentials >
+view credentials
+------------------------
+
+
+
+============================================================================================================
