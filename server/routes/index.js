@@ -6,9 +6,10 @@ var {
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-  var db = req.db;
-  var alldocuments = db.get('blog_post');
-  alldocuments.find({}, {}, function (err, alldocuments) {
+
+  //getting the blog_post collection from DB
+  var blog_post_collec = db.get('blog_post'); //blog_post is collection /table name
+  blog_post_collec.find({}, {}, function (err, alldocuments) {
     res.render('index', {
       listBlogPost: alldocuments
     });

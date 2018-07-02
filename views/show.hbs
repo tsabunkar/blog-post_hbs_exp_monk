@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{{title}}</title>
+
+</head>
+<style></style>
+
+<body>
+    {{!-- itterating over a single object using ->with --}} {{!-- {{#with blogpost as |mypost|}} {{mypost.title}} {{mypost.category}}
+    {{mypost.content}} {{mypost.author}} {{/with}} --}} {{#with blogpost as |mypost|}}
+    <div class="container">
+        <div class="modal-body row">
+
+            <div class="col-md-5" id="leftDivId">
+                <img src="/images/{{mypost.mainimage}}" class="rounded float-left" alt="noimage" width="90%" height="100%">
+            </div>
+
+            <div class="col-md-7" id="rightDivId">
+                <div>
+                    <h1> {{mypost.title}}</h1>
+                    <div class="row">
+                        <div class="col-sm-2">Category:</div>
+                        <div class="col-sm-10">
+                            <h5> {{mypost.category}}</h5>
+                        </div>
+                    </div>
+
+                    <hr>
+                    <small>10 - 04 -2017</small>
+                    <br>
+                    <small>
+                        <strong> {{mypost.author}}</strong>
+                    </small>
+                    <hr>
+
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <div class="container shadow-lg p-3 mb-5 bg-white rounded">
+        <p>{{{mypost.content}}}</p>
+    </div>
+    {{/with}}
+
+</body>
+
+</html>
