@@ -7,9 +7,7 @@ if (env === 'development' || env === 'test') {
         process.env.PORT = config.development.PORT;
         process.env.MONGODB_URI = config.development.MONGODB_URI;
         process.env.JWT_SECRET = config.development.JWT_SECRET;
-
-  
-
+        process.env.URL_404 = config.development.URL_404;
 
     } else {
         process.env.PORT = config.test.PORT;
