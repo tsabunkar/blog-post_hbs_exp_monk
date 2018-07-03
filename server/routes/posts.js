@@ -7,7 +7,7 @@ var upload = multer({
 var {
   db
 } = require('../db/monk_config');
-
+var moment = require('moment')
 /* GET users listing. */
 //http://localhost:3000/posts/add
 router.get('/add', function (req, res, next) {
@@ -69,12 +69,29 @@ router.get('/show/:id', function (req, res, next) {
   console.log(req.params.id)
   //getting the blog_category collection from DB
   let blog_post_collec = db.get('blog_post');
-  blog_post_collec.findOne({_id : req.params.id}, function (err, singleBlogPostDocum) { 
-    res.render('show.hbs', {
-      title: 'Show Post',
-      blogpost: singleBlogPostDocum
+  /*   blog_post_collec.findOne({_id : req.params.id}, function (err, singleBlogPostDocum) { 
+      res.render('show.hbs', {
+        title: 'Show Post',
+        blogpost: singleBlogPostDocum
+      })
+    }) */
+
+    
+  //using promises instead of callback
+  blog_post_collec.findOne({
+      _id: req.params.id
     })
-  })
+    .then((singleBlogPostDocum) => {
+      singleBlogPostDocum.createdAt = moment(singleBlogPostDocum.createdAt).format("MMM Do YY, h:mm:ss a");
+      res.render('show.hbs', {
+        title: 'Show Post',
+        blogpost: singleBlogPostDocum
+      })
+    }).catch((err) => {
+
+    });
+
+
 
 });
 
