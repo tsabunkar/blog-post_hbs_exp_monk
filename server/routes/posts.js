@@ -79,23 +79,26 @@ router.get('/show/:id', function (req, res, next) {
 
   //using promises instead of callback
   blog_post_collec.findOne({
-    _id: req.params.id
-  })
+      _id: req.params.id
+    })
     .then((singleBlogPostDocum) => {
 
       singleBlogPostDocum.createdAt = moment(singleBlogPostDocum.createdAt).format("MMM Do YY, h:mm:ss a");
       // console.log(singleBlogPostDocum.comments.length);     
-      singleBlogPostDocum.comments.map(commentObj => {
+      if (singleBlogPostDocum.comments) { //if these statment is not used, 
+        //then singleBlogPostDocum.comments -> will give undefine and we r doing undefine.map() which is an error 
+        singleBlogPostDocum.comments.map(commentObj => {
 
-        commentObj.commentedAt = moment(commentObj.commentedAt, "YYYYMMDD").fromNow();
-      });
-      singleBlogPostDocum.numberofcomments = singleBlogPostDocum.comments.length //adding new property to singleBlogPostDocum
+          commentObj.commentedAt = moment(commentObj.commentedAt, "YYYYMMDD").fromNow();
+        });
+        singleBlogPostDocum.numberofcomments = singleBlogPostDocum.comments.length //adding new property to singleBlogPostDocum
+      }
       res.render('show.hbs', {
         title: 'Show Post',
         blogpost: singleBlogPostDocum
       })
     }).catch((err) => {
-
+      console.log(err);
     });
 
 
@@ -124,7 +127,13 @@ router.post('/addcomment', function (req, res, next) {
   //fetching Blog_post collection
   let blog_post_collec = db.get('blog_post');
   //updating the blog_post document with new property i.e-> comments object
-  blog_post_collec.update({ "_id": postId }, { $push: { comments: comment } }, (err, doc) => {
+  blog_post_collec.update({
+    "_id": postId
+  }, {
+    $push: {
+      comments: comment
+    }
+  }, (err, doc) => {
     if (err) throw err;
     else {
       console.log(doc);
