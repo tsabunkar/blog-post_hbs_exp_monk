@@ -166,9 +166,20 @@ app.use('/posts', postRouter);
 app.use('/categories', categoryRouter);
 
 // catch 404 and forward to error handler
-app.use(function (req, res, next) {
+/* app.use(function (req, res, next) {
   next(createError(404));
+}); */
+
+app.use(function (req, res, next) {
+  let statusCodeVal = res.statusCode;
+console.log(statusCodeVal);
+  if (statusCodeVal <= 200 || statusCodeVal > 200) {
+    //whatever is the invalid url[or irrespective of invalid url] , just convert that url to this -> http://localhost:3000/pagenotfound url
+    res.redirect( process.env.URL_404)    //this url response is handled in routes/index.js
+  }
+  // next(createError(404));
 });
+
 
 // error handler
 app.use(function (err, req, res, next) {

@@ -8,7 +8,16 @@
     <title>{{title}}</title>
 
 </head>
-<style></style>
+<style>
+    .user_name {
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+    .comments-list .media {
+        border-bottom: 1px dotted #ccc;
+    }
+</style>
 
 <body>
     {{!-- itterating over a single object using ->with --}} {{!-- {{#with blogpost as |mypost|}} {{mypost.title}} {{mypost.category}}
@@ -42,13 +51,84 @@
                 </div>
             </div>
         </div>
-
-
     </div>
+
     <div class="container shadow-lg p-3 mb-5 bg-white rounded">
         <p>{{{mypost.content}}}</p>
     </div>
+
+    <br> {{!-- View the list of comments posted for this post --}} {{#if mypost.comments}}
+    <div class="container">
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="page-header">
+                    <h1>
+                        <small class="pull-right">{{mypost.numberofcomments}} comments</small> Comments </h1>
+                </div>
+    <br>
+                <div class="comments-list">
+
+                    {{#each mypost.comments}}
+
+                    <div class="media">
+
+                        <a class="media-left" href="#">
+
+                            <img src="/images/person.png" width="70%">
+                        </a>
+                        <div class="media-body">
+
+                            <h4 class="media-heading user_name">
+                                <p style="float:right!important" class="pull-right">
+                                    <small>{{this.commentedAt}}</small>
+                                </p>
+                                {{this.name}}</h4>
+                            {{this.body}}
+
+                            <p>
+                                <small>
+                                    <a href="">Like</a>  | 
+                                    <a href="">dislike</a>
+                                   
+                                </small>
+                            </p>
+                        </div>
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+        </div>
+    </div>
+    {{/if}}
+    <br> {{!-- Add new comments for this blog post --}}
+    <div class="shadow-lg p-3 mb-5 bg-light rounded">
+        <form action="/posts/addcomment" method="POST">
+            <div class="form-group">
+                <strong>
+                    <label for="comment">Add Comment</label>
+                </strong>
+                <input type="hidden" name="postId" value="{{mypost._id}}"> {{!-- will perform update to this blog_post collection using this object_Id --}}
+                <div class="form-group">
+                    <label for="exampleFormControlInput1">Name</label>
+                    <input type="text" name="name" class="form-control" id="exampleFormControlInput1" required="required">
+                </div>
+                <div class="form-group">
+                    <label for="exampleFormControlInput2">Email address</label>
+                    <input type="email" name="email" class="form-control" required="required" id="exampleFormControlInput2" placeholder="name@example.com">
+                </div>
+                <div class="form-group">
+                    <label for="exampleFormControlInput3">Comment</label>
+                    <textarea class="form-control" name="body" id="exampleFormControlInput3" rows="3" required="required"></textarea>
+                </div>
+
+            </div>
+            <button type="submit" class="btn btn-default">Send</button>
+        </form>
+    </div>
+
     {{/with}}
+    <br>
 
 </body>
 
