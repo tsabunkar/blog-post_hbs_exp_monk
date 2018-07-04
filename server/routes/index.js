@@ -16,7 +16,7 @@ router.get('/', function (req, res, next) {
       });
     }) */
 
-    
+
   //using promises instead of callback
   blog_post_collec.find({}, {}).then((alldocuments) => {
     // console.log(JSON.stringify(alldocuments,undefined,2));
@@ -33,9 +33,14 @@ router.get('/', function (req, res, next) {
 
 });
 
-console.log(path.join(__dirname + '/../../public'));
- //code for handling  pagenotfound ie-> http://localhost:3000/pagenotfound
- router.get('/pagenotfound', function (req, res, next) {
+router.get('/comments', function (req, res, next) {
+  res.render('comments')
+})
+
+
+// console.log(path.join(__dirname + '/../../public'));
+//code for handling  pagenotfound ie-> http://localhost:3000/pagenotfound
+router.get('/pagenotfound', function (req, res, next) {
   res.sendFile('pagenotfound.html', {
     root: path.join(__dirname + '/../../public')  // response.sendfile('public/pagenotfound.html');
   });
